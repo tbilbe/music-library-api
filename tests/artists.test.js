@@ -9,7 +9,7 @@ describe('/artists', () => {
   });
 
   describe('POST /artists', () => {
-    xit('creates a new artist in the database', (done) => {
+    it('creates a new artist in the database', (done) => {
       chai.request(server)
         .post('/artists')
         .send({
@@ -34,9 +34,18 @@ describe('/artists', () => {
     let artists;
     beforeEach((done) => {
       Promise.all([
-        Artist.create({ name: 'Tame Impala', genre: 'Rock' }),
-        Artist.create({ name: 'Kylie Minogue', genre: 'Pop' }),
-        Artist.create({ name: 'Dave Brubeck', genre: 'Jazz' }),
+        Artist.create({
+          name: 'Tame Impala',
+          genre: 'Rock'
+        }),
+        Artist.create({
+          name: 'Kylie Minogue',
+          genre: 'Pop'
+        }),
+        Artist.create({
+          name: 'Dave Brubeck',
+          genre: 'Jazz'
+        }),
       ]).then((documents) => {
         artists = documents;
         done();
@@ -53,7 +62,8 @@ describe('/artists', () => {
             expect(res.body).to.have.lengthOf(3);
 
             res.body.forEach((artist) => {
-              const expected = artists.find(a => a._id.toString() === artist._id);
+              const expected = artists.find(a => a._id.toString() === artist
+                ._id);
               expect(artist.name).to.equal(expected.name);
               expect(artist.genre).to.equal(expected.genre);
             });
@@ -93,7 +103,9 @@ describe('/artists', () => {
         const artist = artists[0];
         chai.request(server)
           .patch(`/artists/${artist._id}`)
-          .send({ genre: 'Psychedelic Rock' })
+          .send({
+            genre: 'Psychedelic Rock'
+          })
           .end((err, res) => {
             expect(err).to.equal(null);
             expect(res.status).to.equal(200);
@@ -107,7 +119,9 @@ describe('/artists', () => {
       xit('returns a 404 if the artist does not exist', (done) => {
         chai.request(server)
           .patch('/artists/12345')
-          .send({ genre: 'Psychedelic Rock' })
+          .send({
+            genre: 'Psychedelic Rock'
+          })
           .end((err, res) => {
             expect(err).to.equal(null);
             expect(res.status).to.equal(404);

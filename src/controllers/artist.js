@@ -15,3 +15,17 @@ exports.listAll = (req, res) => {
     res.status(200).json(artist);
   });
 };
+
+exports.find = (req, res) => {
+  Artist.findById({
+    _id: req.params.artistId,
+  }).then((err, artist) => {
+    if (artist === null) {
+      res.status(404).json({
+        err: 'The artist could not be found.',
+      });
+    } else {
+      res.status(200).json(artist);
+    }
+  });
+};

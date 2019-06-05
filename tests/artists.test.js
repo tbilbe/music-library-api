@@ -134,9 +134,7 @@ describe('/artists', () => {
     describe('PATCH /artist/:artistId', () => {
       it('updates artist by id -> name', (done) => {
         const artist = artists[0];
-        console.log('artist in MY Patch: ', artist);
         chai.request(server)
-          // .patch(`/artists/${artist._id}`)
           .patch(`/artists/${artist._id}`)
           .send({
             name: 'Black Sabbath',
@@ -145,8 +143,6 @@ describe('/artists', () => {
             expect(err).to.equal(null);
             expect(res.status).to.equal(200);
             Artist.findById(artist._id, (err, updatedArtist) => {
-              console.log('***************************error', err);
-              console.log('updatedArtist inside findbyid: ', updatedArtist)
               expect(updatedArtist.name).to.equal('Black Sabbath');
               expect(updatedArtist.genre).to.equal(artist.genre);
               done();

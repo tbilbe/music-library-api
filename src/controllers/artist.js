@@ -42,3 +42,17 @@ exports.updateArtist = (req, res) => {
     }
   });
 };
+
+exports.deleteArtist = (req, res) => {
+  Artist.findByIdAndDelete(req.params.artistId, (err, artist) => {
+    if (!artist) {
+      res.status(404).json({
+        error: 'The artist could not be found.',
+      });
+    } else {
+      res.status(204).json({
+        success: 'The artist was successfully deleted from the database.',
+      });
+    }
+  });
+};

@@ -56,3 +56,23 @@ exports.deleteArtist = (req, res) => {
     }
   });
 };
+
+// exports.createAlbum = (req, res) => {
+//   Artist.findById(req.params.artistId, (err, artist) => {
+//     if (!artist) {
+//       res.status(404).json({
+//         error: 'The artist could not be found.',
+//       });
+//     } else {
+//       const album = new Album({
+//         artist,
+//         name: req.body.name,
+//         year: req.body.year,
+//         genre: req.body.genre,
+//       });
+//       album.save(() => {
+//         res.status(201).json(album);
+//       });
+//     }
+//   });
+// };

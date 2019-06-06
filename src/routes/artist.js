@@ -8,5 +8,6 @@ router.get('/', artistController.listAll);
 router.get('/:artistId', artistController.find);
 router.patch('/:artistId', artistController.updateArtist);
 router.delete('/:artistId', artistController.deleteArtist);
+// router.post('/:artistId/albums', artistController.createAlbum);
 
 module.exports = router;

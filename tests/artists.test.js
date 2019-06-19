@@ -9,7 +9,7 @@ describe('/artists', () => {
   });
 
   describe('POST /artists', () => {
-    xit('creates a new artist in the database', (done) => {
+    it('creates a new artist in the database', (done) => {
       chai.request(server)
         .post('/artists')
         .send({
@@ -34,9 +34,18 @@ describe('/artists', () => {
     let artists;
     beforeEach((done) => {
       Promise.all([
-        Artist.create({ name: 'Tame Impala', genre: 'Rock' }),
-        Artist.create({ name: 'Kylie Minogue', genre: 'Pop' }),
-        Artist.create({ name: 'Dave Brubeck', genre: 'Jazz' }),
+        Artist.create({
+          name: 'Tame Impala',
+          genre: 'Rock'
+        }),
+        Artist.create({
+          name: 'Kylie Minogue',
+          genre: 'Pop'
+        }),
+        Artist.create({
+          name: 'Dave Brubeck',
+          genre: 'Jazz'
+        }),
       ]).then((documents) => {
         artists = documents;
         done();
@@ -44,7 +53,7 @@ describe('/artists', () => {
     });
 
     describe('GET /artists', () => {
-      xit('gets all artist records', (done) => {
+      it('gets all artist records', (done) => {
         chai.request(server)
           .get('/artists')
           .end((err, res) => {
@@ -53,7 +62,8 @@ describe('/artists', () => {
             expect(res.body).to.have.lengthOf(3);
 
             res.body.forEach((artist) => {
-              const expected = artists.find(a => a._id.toString() === artist._id);
+              const expected = artists.find(a => a._id.toString() === artist
+                ._id);
               expect(artist.name).to.equal(expected.name);
               expect(artist.genre).to.equal(expected.genre);
             });
@@ -63,7 +73,7 @@ describe('/artists', () => {
     });
 
     describe('GET /artist/:artistId', () => {
-      xit('gets artist record by id', (done) => {
+      it('gets artist record by id', (done) => {
         const artist = artists[0];
         chai.request(server)
           .get(`/artists/${artist._id}`)
@@ -76,7 +86,7 @@ describe('/artists', () => {
           });
       });
 
-      xit('returns a 404 if the artist does not exist', (done) => {
+      it('returns a 404 if the artist does not exist', (done) => {
         chai.request(server)
           .get('/artists/12345')
           .end((err, res) => {
@@ -89,11 +99,13 @@ describe('/artists', () => {
     });
 
     describe('PATCH /artists/:artistId', () => {
-      xit('updates artist record by id', (done) => {
+      it('updates artist record by id', (done) => {
         const artist = artists[0];
         chai.request(server)
           .patch(`/artists/${artist._id}`)
-          .send({ genre: 'Psychedelic Rock' })
+          .send({
+            genre: 'Psychedelic Rock'
+          })
           .end((err, res) => {
             expect(err).to.equal(null);
             expect(res.status).to.equal(200);
@@ -104,10 +116,12 @@ describe('/artists', () => {
           });
       });
 
-      xit('returns a 404 if the artist does not exist', (done) => {
+      it('returns a 404 if the artist does not exist', (done) => {
         chai.request(server)
           .patch('/artists/12345')
-          .send({ genre: 'Psychedelic Rock' })
+          .send({
+            genre: 'Psychedelic Rock'
+          })
           .end((err, res) => {
             expect(err).to.equal(null);
             expect(res.status).to.equal(404);
@@ -117,8 +131,28 @@ describe('/artists', () => {
       });
     });
 
+    describe('PATCH /artist/:artistId', () => {
+      it('updates artist by id -> name', (done) => {
+        const artist = artists[0];
+        chai.request(server)
+          .patch(`/artists/${artist._id}`)
+          .send({
+            name: 'Black Sabbath',
+          })
+          .end((err, res) => {
+            expect(err).to.equal(null);
+            expect(res.status).to.equal(200);
+            Artist.findById(artist._id, (err, updatedArtist) => {
+              expect(updatedArtist.name).to.equal('Black Sabbath');
+              expect(updatedArtist.genre).to.equal(artist.genre);
+              done();
+            });
+          });
+      });
+    });
+
     describe('DELETE /artists/:artistId', () => {
-      xit('deletes artist record by id', (done) => {
+      it('deletes artist record by id', (done) => {
         const artist = artists[0];
         chai.request(server)
           .delete(`/artists/${artist._id}`)
@@ -133,7 +167,7 @@ describe('/artists', () => {
           });
       });
 
-      xit('returns a 404 if the artist does not exist', (done) => {
+      it('returns a 404 if the artist does not exist', (done) => {
         chai.request(server)
           .delete('/artists/12345')
           .end((err, res) => {
